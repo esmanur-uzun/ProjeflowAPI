@@ -2,10 +2,12 @@ import mongoose, { Schema } from 'mongoose';
 import { IBaseModel } from '../../@base/baseModel';
 
 export interface IUser extends IBaseModel {
-    fullName: string;
+    name: string;
+    lastName: string,
+    userName: string,
     email: string;
     password: string;
-    role: 'engineer' | 'R&D manager';
+    role: 'engineer' | 'R&D manager' | 'Admin';
     phoneNumber: string;
     department: string;
     profilePhoto?: string;
@@ -13,7 +15,15 @@ export interface IUser extends IBaseModel {
 }
 
 const userSchemaFields = {
-    fullName: {
+    name: {
+        type: String,
+        required: [true, "Name is required"]
+    },
+    lastName: {
+        type: String,
+        required: [true, "Name is required"]
+    },
+    userName: {
         type: String,
         required: [true, "Name is required"]
     },
@@ -29,8 +39,8 @@ const userSchemaFields = {
         type: String,
         default: 'engineer',
         enum: {
-            values: ["engineer", "R&D manager"],
-            message: "Role must be either 'engineer' or 'R&D manager'"
+            values: ["engineer", "R&D manager", "admin"],
+            message: "Role must be either 'engineer' , 'admin'  or 'R&D manager'"
         }
     },
     phoneNumber: {

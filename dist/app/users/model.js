@@ -25,7 +25,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const userSchemaFields = {
-    fullName: {
+    name: {
+        type: String,
+        required: [true, "Name is required"]
+    },
+    lastName: {
+        type: String,
+        required: [true, "Name is required"]
+    },
+    userName: {
         type: String,
         required: [true, "Name is required"]
     },
@@ -41,8 +49,8 @@ const userSchemaFields = {
         type: String,
         default: 'engineer',
         enum: {
-            values: ["engineer", "R&D manager"],
-            message: "Role must be either 'engineer' or 'R&D manager'"
+            values: ["engineer", "R&D manager", "admin"],
+            message: "Role must be either 'engineer' , 'admin'  or 'R&D manager'"
         }
     },
     phoneNumber: {

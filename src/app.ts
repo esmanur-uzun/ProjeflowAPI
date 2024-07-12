@@ -1,7 +1,9 @@
+import "express-async-errors"
 import express, { Request, Response } from "express";
 import { config } from "./@utils/config";
 import dbConnection from "./db/dbConnection";
 import router from "./routes"
+import errorHandlerMiddleware from "./middlewares/errorHandler";
 
 const app = express();
 
@@ -17,7 +19,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api",router)
-
+app.use(errorHandlerMiddleware)
 
 dbConnection()
   .then(() => {

@@ -16,6 +16,7 @@ exports.register = exports.login = void 0;
 const model_1 = __importDefault(require("../users/model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const errors_1 = __importDefault(require("../../@utils/errors"));
+const response_1 = __importDefault(require("../../@utils/response"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.body);
     return res.json(req.body);
@@ -29,18 +30,14 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         throw new errors_1.default("Kullanıcı zaten mevcut", 401);
     }
     req.body.password = yield bcrypt_1.default.hash(req.body.password, 10);
-    console.log("şifre", req.body.password);
-    try {
-        const userSave = new model_1.default(Object.assign({}, req.body, { userName }));
-        yield userSave.save().then((response) => {
-            return res.status(201).json({ success: true, data: response, message: "User registered successfully" });
-        })
-            .catch((err) => {
-            console.log(err);
-        });
-    }
-    catch (error) {
-        console.log(error);
-    }
+    const userSave = new model_1.default(Object.assign({}, req.body, { userName }));
+    yield userSave
+        .save()
+        .then((data_res) => {
+        return new response_1.default(data_res, "Kayıt Başarıyla Eklendi").created(res);
+    })
+        .catch((err) => {
+        console.log(err);
+    });
 });
 exports.register = register;

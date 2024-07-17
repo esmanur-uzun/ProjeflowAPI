@@ -37,7 +37,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return new response_1.default(data_res, "Kayıt Başarıyla Eklendi").created(res);
     })
         .catch((err) => {
-        console.log(err);
+        throw new errors_1.default("Kullanıcı Kayıt Edilemedi", 400);
     });
 });
 exports.register = register;

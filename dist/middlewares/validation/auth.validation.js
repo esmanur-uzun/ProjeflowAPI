@@ -55,6 +55,17 @@ const userValidationSchema = zod_1.default.object({
     profilePhoto: zod_1.default.string().optional(),
     startingDate: zod_1.default.date().optional()
 });
+const loginValidationSchema = zod_1.default.object({
+    userName: zod_1.default.string({
+        required_error: "Kullanıcı adı alanı boş geçilemez!",
+    }).trim(),
+    password: zod_1.default.string({
+        required_error: "Şifre alanı boş geçilemez!",
+        invalid_type_error: "Şifre alanı yalnızca karakterler içermelidir!"
+    })
+        .min(6, "Şifre en az 6 karakterden oluşmalıdır!")
+        .max(10, "Şifre en fazla 10 karakter içerebilir!")
+});
 class authValidation {
     constructor() { }
 }
@@ -62,6 +73,21 @@ _a = authValidation;
 authValidation.register = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield userValidationSchema.parseAsync(req.body);
+        next();
+    }
+    catch (error) {
+        if (error instanceof zod_1.default.ZodError) {
+            const formattedErrors = error.errors.map(err => err.message).join(", ");
+            next(new errors_1.default(formattedErrors, 400));
+        }
+        else {
+            next(error);
+        }
+    }
+});
+authValidation.login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield loginValidationSchema.parseAsync(req.body);
         next();
     }
     catch (error) {

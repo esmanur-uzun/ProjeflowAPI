@@ -50,12 +50,38 @@ const userValidationSchema = z.object({
     startingDate: z.date().optional()
 });
 
+const loginValidationSchema = z.object({
+    userName: z.string({
+        required_error: "Kullanıcı adı alanı boş geçilemez!",
+    }).trim(),
+    password: z.string({
+        required_error: "Şifre alanı boş geçilemez!",
+        invalid_type_error: "Şifre alanı yalnızca karakterler içermelidir!"
+    })
+    .min(6, "Şifre en az 6 karakterden oluşmalıdır!")
+    .max(10, "Şifre en fazla 10 karakter içerebilir!")
+});
+
 class authValidation {
     constructor() {}
     static register = async (req: Request, res: Response, next: NextFunction) => {
         try {
             await userValidationSchema.parseAsync(req.body);
             next();
+        } catch (error) {
+            if (error instanceof z.ZodError) {
+                const formattedErrors = error.errors.map(err => err.message).join(", ");
+                next(new APIError(formattedErrors, 400));
+            } else {
+                next(error);
+            }
+        }
+    }
+
+    static login = async (req:Request, res:Response, next: NextFunction) =>{
+        try {
+            await loginValidationSchema.parseAsync(req.body)
+            next()
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const formattedErrors = error.errors.map(err => err.message).join(", ");

@@ -17,9 +17,18 @@ const model_1 = __importDefault(require("../users/model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const errors_1 = __importDefault(require("../../@utils/errors"));
 const response_1 = __importDefault(require("../../@utils/response"));
+const auth_1 = __importDefault(require("../../middlewares/auth"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
-    return res.json(req.body);
+    const { userName, password } = req.body;
+    const user = yield model_1.default.findOne({ userName });
+    if (!user) {
+        throw new errors_1.default("Kullanıcı adı ya da şifre hatalıdır!", 401);
+    }
+    const comparePassword = yield bcrypt_1.default.compare(password, user.password);
+    if (!comparePassword) {
+        throw new errors_1.default("Kullanıcı adı ya da şifre hatalıdır!", 401);
+    }
+    auth_1.default.createToken({ userName: user.userName }, res);
 });
 exports.login = login;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

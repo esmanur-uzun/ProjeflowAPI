@@ -3,10 +3,20 @@ import User from "../users/model";
 import bcrypt from "bcrypt";
 import APIError from "../../@utils/errors";
 import ResponseMessage from "../../@utils/response";
+import JWt from "../../middlewares/auth";
 
 export const login = async (req: Request, res: Response) => {
-  console.log(req.body);
-  return res.json(req.body);
+  const { userName, password } = req.body;
+  const user = await User.findOne({ userName });
+
+  if (!user) {
+    throw new APIError("Kullanıcı adı ya da şifre hatalıdır!", 401);
+  }
+  const comparePassword = await bcrypt.compare(password, user.password);
+  if (!comparePassword) {
+    throw new APIError("Kullanıcı adı ya da şifre hatalıdır!", 401);
+  }
+  JWt.createToken({userName:user.userName},res)
 };
 
 export const register = async (req: Request, res: Response) => {
@@ -31,6 +41,6 @@ export const register = async (req: Request, res: Response) => {
       );
     })
     .catch((err) => {
-      throw new APIError("Kullanıcı Kayıt Edilemedi",400)
+      throw new APIError("Kullanıcı Kayıt Edilemedi", 400);
     });
 };

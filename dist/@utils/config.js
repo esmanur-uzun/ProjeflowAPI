@@ -8,5 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 exports.config = {
     port: process.env.PORT,
-    database_url: process.env.DB_URL
+    database_url: process.env.DB_URL,
+    jwt_access_secret: process.env.JWT_SECRET_KEY,
+    jwt_expires_in: process.env.JWT_EXPIRES_IN
 };

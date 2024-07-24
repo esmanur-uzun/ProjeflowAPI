@@ -12,17 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userController = void 0;
-const baseController_1 = __importDefault(require("../../@base/baseController"));
-const response_1 = __importDefault(require("../../@utils/response"));
-const model_1 = __importDefault(require("./model"));
-class UserController extends baseController_1.default {
-    constructor() {
-        super(model_1.default);
-        this.me = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            return new response_1.default(req.user).success(res);
+const response_1 = __importDefault(require("../@utils/response"));
+const errors_1 = __importDefault(require("../@utils/errors"));
+class BaseController {
+    constructor(model) {
+        // get all document
+        this.getAll = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const documents = yield this.model.find();
+                new response_1.default(documents, "Veriler başarıyla alındı").success(res);
+            }
+            catch (error) {
+                throw new errors_1.default("Veriler alınırken bir hata oluştu");
+            }
         });
+        this.model = model;
     }
 }
-const userController = new UserController();
-exports.userController = userController;
+exports.default = BaseController;

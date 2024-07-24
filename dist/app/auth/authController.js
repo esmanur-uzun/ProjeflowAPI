@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = exports.login = void 0;
 const model_1 = __importDefault(require("../users/model"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const errors_1 = __importDefault(require("../../@utils/errors"));
 const response_1 = __importDefault(require("../../@utils/response"));
 const auth_1 = __importDefault(require("../../middlewares/auth"));
@@ -24,7 +24,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!user) {
         throw new errors_1.default("Kullanıcı adı ya da şifre hatalıdır!", 401);
     }
-    const comparePassword = yield bcrypt_1.default.compare(password, user.password);
+    const comparePassword = yield bcryptjs_1.default.compare(password, user.password);
     if (!comparePassword) {
         throw new errors_1.default("Kullanıcı adı ya da şifre hatalıdır!", 401);
     }
@@ -38,7 +38,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (userCheck) {
         throw new errors_1.default("Kullanıcı zaten mevcut", 401);
     }
-    req.body.password = yield bcrypt_1.default.hash(req.body.password, 10);
+    req.body.password = yield bcryptjs_1.default.hash(req.body.password, 10);
     const userSave = new model_1.default(Object.assign({}, req.body, { userName }));
     yield userSave
         .save()

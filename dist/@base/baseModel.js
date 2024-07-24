@@ -2,16 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const baseSchemaFields = {
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        required: true
+    _id: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        auto: true,
     },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-        required: true
-    }
 };
-const baseSchema = new mongoose_1.Schema(baseSchemaFields, { _id: false });
+const baseSchemaOptions = {
+    timestamps: {
+        createdAt: "createdAt",
+        updatedAt: "updatedAt",
+    },
+    _id: false,
+};
+const baseSchema = new mongoose_1.Schema(baseSchemaFields, baseSchemaOptions);
 exports.default = baseSchema;

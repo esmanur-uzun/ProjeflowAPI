@@ -43,7 +43,6 @@ const JWT = {
             const decoded = jsonwebtoken_1.default.verify(token, config_1.config.jwt_access_secret);
             if (decoded && typeof decoded === 'object' && 'userName' in decoded) {
                 const userInfo = yield model_1.default.findOne({ userName: decoded.userName });
-                console.log(userInfo);
                 if (!userInfo) {
                     throw new errors_1.default("Kullanıcı bulunamadı!", 404);
                 }

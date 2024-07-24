@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import User from "../users/model";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs"
 import APIError from "../../@utils/errors";
 import ResponseMessage from "../../@utils/response";
 import JWt from "../../middlewares/auth";

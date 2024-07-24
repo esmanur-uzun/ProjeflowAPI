@@ -5,5 +5,7 @@ import JWt from "../../middlewares/auth";
 
 router.get("/me",JWt.tokenCheck ,userController.me)
 router.get("/users",userController.getAll)
+router.get("/users/:id",userController.getById)
+router.delete("/users/:id",userController.delete)
 
 export default router

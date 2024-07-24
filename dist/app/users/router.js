@@ -9,4 +9,6 @@ const router = express_1.default.Router();
 const auth_1 = __importDefault(require("../../middlewares/auth"));
 router.get("/me", auth_1.default.tokenCheck, controller_1.userController.me);
 router.get("/users", controller_1.userController.getAll);
+router.get("/users/:id", controller_1.userController.getById);
+router.delete("/users/:id", controller_1.userController.delete);
 exports.default = router;

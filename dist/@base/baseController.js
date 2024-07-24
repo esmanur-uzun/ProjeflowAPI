@@ -23,7 +23,34 @@ class BaseController {
                 new response_1.default(documents, "Veriler başarıyla alındı").success(res);
             }
             catch (error) {
-                throw new errors_1.default("Veriler alınırken bir hata oluştu");
+                throw new errors_1.default("Veriler alınırken bir hata oluştu!");
+            }
+        });
+        // get document by id
+        this.getById = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const document = yield this.model.findById(req.params.id);
+                if (!document)
+                    new response_1.default("Veri bulunamadı!").error404(res);
+                else
+                    new response_1.default(document, "Veriler başarıyla alındı").success(res);
+            }
+            catch (error) {
+                throw new errors_1.default("Veri alınırken bir hata oluştu!");
+            }
+        });
+        // delete a document
+        this.delete = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const document = this.model.findByIdAndDelete(req.params.id);
+                if (!document)
+                    new response_1.default("Veri bulunamadı!").error404(res);
+                else
+                    new response_1.default("Veri başarıyla silindi").success(res);
+            }
+            catch (error) {
+                console.log(error);
+                throw new errors_1.default("Veri silinirken bir hata oluştu!");
             }
         });
         this.model = model;

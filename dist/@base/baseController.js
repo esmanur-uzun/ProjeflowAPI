@@ -16,7 +16,19 @@ const response_1 = __importDefault(require("../@utils/response"));
 const errors_1 = __importDefault(require("../@utils/errors"));
 class BaseController {
     constructor(model) {
-        // get all document
+        // create a data
+        this.create = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const document = new this.model(req.body);
+                yield document.save();
+                new response_1.default("İşlem başarılı").created(res);
+            }
+            catch (error) {
+                console.log(error);
+                throw new errors_1.default("Veriler eklenirken bir hata oluştu!");
+            }
+        });
+        // get all data
         this.getAll = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const documents = yield this.model.find();
@@ -26,7 +38,7 @@ class BaseController {
                 throw new errors_1.default("Veriler alınırken bir hata oluştu!");
             }
         });
-        // get document by id
+        // get data by id
         this.getById = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const document = yield this.model.findById(req.params.id);
@@ -39,7 +51,7 @@ class BaseController {
                 throw new errors_1.default("Veri alınırken bir hata oluştu!");
             }
         });
-        // delete a document
+        // delete a data
         this.delete = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const document = this.model.findByIdAndDelete(req.params.id);
@@ -49,8 +61,20 @@ class BaseController {
                     new response_1.default("Veri başarıyla silindi").success(res);
             }
             catch (error) {
-                console.log(error);
                 throw new errors_1.default("Veri silinirken bir hata oluştu!");
+            }
+        });
+        // update a data
+        this.update = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const document = yield this.model.findByIdAndUpdate(req.params.id, req.body, { new: true });
+                if (!document)
+                    new response_1.default("Veri bulunumadı").error404(res);
+                else
+                    new response_1.default("Veri başarıyla güncellendi").success(res);
+            }
+            catch (error) {
+                throw new errors_1.default("Veri güncelleme işleminde bir hata oluştu!");
             }
         });
         this.model = model;

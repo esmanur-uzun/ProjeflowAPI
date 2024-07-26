@@ -28,7 +28,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const projectSchemaFields = {
     title: { type: String, required: true },
     content: { type: String, required: true },
-    creationDate: { type: Date, required: true },
+    creationDate: { type: Date, required: true, default: Date.now },
     startDate: { type: Date, required: true },
     terminDate: { type: Date, required: true },
     status: {
@@ -39,7 +39,7 @@ const projectSchemaFields = {
     owner: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
     teamMembers: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User" }],
     tasks: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Task" }],
-    updateDate: { type: Date, required: true },
+    updateDate: { type: Date, default: null },
 };
 const projectSchema = new mongoose_1.Schema(projectSchemaFields, { collection: "project", timestamps: true });
 exports.Project = mongoose_1.default.model("Project", projectSchema);

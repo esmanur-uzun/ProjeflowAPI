@@ -11,4 +11,5 @@ router.get("/me", auth_1.default.tokenCheck, controller_1.userController.me);
 router.get("/users", controller_1.userController.getAll);
 router.get("/users/:id", controller_1.userController.getById);
 router.delete("/users/:id", controller_1.userController.delete);
+router.put("/users/:id", controller_1.userController.update);
 exports.default = router;

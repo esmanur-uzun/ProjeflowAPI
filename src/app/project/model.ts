@@ -18,7 +18,7 @@ export interface IProject extends IBaseModel {
 const projectSchemaFields = {
   title: { type: String, required: true },
   content: { type: String, required: true },
-  creationDate: { type: Date, required: true },
+  creationDate: { type: Date, required: true, default: Date.now },
   startDate: { type: Date, required: true },
   terminDate: { type: Date, required: true },
   status: {
@@ -29,7 +29,7 @@ const projectSchemaFields = {
   owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
   teamMembers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
-  updateDate: { type: Date, required: true },
+  updateDate: { type: Date, default: null },
 };
 
 const projectSchema = new Schema(projectSchemaFields, { collection: "project", timestamps: true });

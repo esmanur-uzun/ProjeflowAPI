@@ -7,5 +7,6 @@ router.get("/me",JWt.tokenCheck ,userController.me)
 router.get("/users",userController.getAll)
 router.get("/users/:id",userController.getById)
 router.delete("/users/:id",userController.delete)
+router.put("/users/:id",userController.update)
 
 export default router

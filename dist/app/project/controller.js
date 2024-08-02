@@ -23,20 +23,45 @@ class ProjectController extends baseController_1.default {
         super(model_2.Project);
         this.assignEngineer = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const { projectId, userId } = req.body;
-                const project = yield this.model.findById(projectId);
+                const { id } = req.params;
+                const { userId } = req.body;
+                const project = yield this.model.findById(id);
                 if (!project)
                     new response_1.default("Proje bulunamadı!").error404(res);
                 const user = (yield model_1.default.findById(userId));
-                if (!user || user.role !== "engineer")
+                if (!user || user.role !== "engineer") {
                     new response_1.default("Geçersiz mühendis ID!").error400(res);
-                if (project === null || project === void 0 ? void 0 : project.teamMembers.includes(userId))
+                    return;
+                }
+                if (project === null || project === void 0 ? void 0 : project.teamMembers.includes(userId)) {
                     new response_1.default("Mühendis zaten projeye atanmış").error400(res);
+                    return;
+                }
                 project === null || project === void 0 ? void 0 : project.teamMembers.push(userId);
+                new response_1.default("Mühendis projeye atandı").success(res);
                 yield (project === null || project === void 0 ? void 0 : project.save());
             }
             catch (error) {
+                console.log(error);
                 throw new errors_1.default("Mühendis atama işleminde bir hata oluştu!");
+            }
+        });
+        this.removeMember = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const { userId } = req.body;
+                const project = yield this.model.findById(id);
+                if (!project) {
+                    new response_1.default("Proje bulunamadı!").error404(res);
+                    return;
+                }
+                project.teamMembers = project.teamMembers.filter((member) => member.toString() !== userId);
+                yield project.save();
+                new response_1.default("Mühendis projeden çıkarıldı!").success(res);
+            }
+            catch (error) {
+                console.log(error);
+                throw new errors_1.default("Mühendis silme işleminde bir hata oluştu!");
             }
         });
     }

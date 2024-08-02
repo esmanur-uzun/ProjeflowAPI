@@ -51,7 +51,7 @@ class BaseController <T extends Document>{
 
     public delete = async(req:Request,res:Response) : Promise<void> =>{
         try {
-            const document = this.model.findByIdAndDelete(req.params.id)
+            const document = await this.model.findByIdAndDelete(req.params.id)
 
             if(!document) new ResponseMessage("Veri bulunamadı!").error404(res)
             else new ResponseMessage("Veri başarıyla silindi").success(res)

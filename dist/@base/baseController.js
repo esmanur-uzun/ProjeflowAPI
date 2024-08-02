@@ -54,7 +54,7 @@ class BaseController {
         // delete a data
         this.delete = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const document = this.model.findByIdAndDelete(req.params.id);
+                const document = yield this.model.findByIdAndDelete(req.params.id);
                 if (!document)
                     new response_1.default("Veri bulunamadı!").error404(res);
                 else

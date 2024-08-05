@@ -4,7 +4,7 @@ import { IBaseModel } from "../../@base/baseModel";
 export interface ITask extends IBaseModel {
     title: string;
     description?: string;
-    assignedTo: ObjectId[]; 
+    assignedTo?: ObjectId[]; 
     startDate?: Date;
     endDate?: Date;
     status: 'not started' | 'in progress' | 'completed';

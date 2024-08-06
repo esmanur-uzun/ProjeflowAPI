@@ -35,6 +35,7 @@ class BaseController {
                 new response_1.default(documents, "Veriler başarıyla alındı").success(res);
             }
             catch (error) {
+                console.log(error);
                 throw new errors_1.default("Veriler alınırken bir hata oluştu!");
             }
         });
@@ -42,12 +43,15 @@ class BaseController {
         this.getById = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const document = yield this.model.findById(req.params.id);
-                if (!document)
+                if (!document) {
                     new response_1.default("Veri bulunamadı!").error404(res);
+                    return;
+                }
                 else
                     new response_1.default(document, "Veriler başarıyla alındı").success(res);
             }
             catch (error) {
+                console.log(error);
                 throw new errors_1.default("Veri alınırken bir hata oluştu!");
             }
         });

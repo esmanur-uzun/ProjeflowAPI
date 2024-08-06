@@ -38,7 +38,7 @@ class TaskController extends baseController_1.default {
                     endDate,
                     status,
                 });
-                yield project.save();
+                yield newTask.save();
                 project.tasks.push(newTask._id);
                 yield project.save();
                 new response_1.default(newTask, "Görev başarıyla oluşturuldu ve projeye eklendi!").success(res);
@@ -46,6 +46,25 @@ class TaskController extends baseController_1.default {
             catch (error) {
                 console.log(error);
                 throw new errors_1.default("Görev oluşturulken bir hata oluştu!");
+            }
+        });
+        this.getAllTasks = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { projectId } = req.params;
+                const project = yield model_2.Project.findById(projectId).populate("tasks");
+                if (!project) {
+                    new response_1.default("Proje bulunamadı!").error404(res);
+                    return;
+                }
+                if (!project.tasks || project.tasks.length === 0) {
+                    new response_1.default("Bu proje için henüz görev bulunmamaktadır!").success(res);
+                    return;
+                }
+                new response_1.default(project.tasks, "Görevler başarıyla getirildi!").success(res);
+            }
+            catch (error) {
+                console.log(error);
+                throw new errors_1.default("Görevler getirilirken bir hata oluştu!");
             }
         });
     }

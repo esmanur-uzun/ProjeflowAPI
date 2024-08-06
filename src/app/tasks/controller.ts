@@ -28,7 +28,7 @@ class TaskController extends BaseController<ITask> {
         endDate,
         status,
       });
-      await project.save();
+      await newTask.save();
 
       project.tasks.push(newTask._id as any);
       await project.save();
@@ -37,9 +37,35 @@ class TaskController extends BaseController<ITask> {
         "Görev başarıyla oluşturuldu ve projeye eklendi!"
       ).success(res);
     } catch (error) {
-        console.log(error);
-        throw new APIError("Görev oluşturulken bir hata oluştu!")
-        
+      console.log(error);
+      throw new APIError("Görev oluşturulken bir hata oluştu!");
+    }
+  };
+
+  public getAllTasks = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { projectId } = req.params;
+
+      const project = await Project.findById(projectId).populate("tasks");
+      if (!project) {
+        new ResponseMessage("Proje bulunamadı!").error404(res);
+        return;
+      }
+
+      if (!project.tasks || project.tasks.length === 0) {
+        new ResponseMessage(
+          "Bu proje için henüz görev bulunmamaktadır!"
+        ).success(res);
+        return;
+      }
+
+      new ResponseMessage(
+        project.tasks,
+        "Görevler başarıyla getirildi!"
+      ).success(res);
+    } catch (error) {
+      console.log(error);
+      throw new APIError("Görevler getirilirken bir hata oluştu!");
     }
   };
 }

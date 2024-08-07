@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, ObjectId } from 'mongoose';
+import mongoose, { Schema, ObjectId } from 'mongoose';
 import { IBaseModel } from "../../@base/baseModel";
 
 export interface ITask extends IBaseModel {

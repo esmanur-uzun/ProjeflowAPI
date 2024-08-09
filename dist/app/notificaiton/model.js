@@ -27,6 +27,8 @@ exports.Notification = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const notificationSchemaFields = {
     user: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
+    recipients: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true }],
+    subject: { type: String, required: true },
     project: { type: mongoose_1.Schema.Types.ObjectId, ref: "Project" },
     task: { type: mongoose_1.Schema.Types.ObjectId, ref: "Task" },
     message: { type: String, required: true },

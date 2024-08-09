@@ -9,17 +9,21 @@ class NotificationController extends BaseController<INotification> {
     super(Notification);
   }
 
-  public getNotificationsForUser = async (req: Request, res: Response) => {
+  public getNotificationsForUser = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
     try {
       const { userId } = req.params;
 
-       await Notification.find({ user: userId }).sort({createdAt: -1,});
-
-      new ResponseMessage("Bildirimler başarıyla alındı!").success(res);
+      const notifications = await Notification.find({ $or:[{user: userId},{recipients:userId}] }).sort({
+        createdAt: -1,
+      }).select("-recipients");
+      
+      new ResponseMessage(notifications,"Bildirimler başarıyla alındı!").success(res);
     } catch (error) {
-        console.log(error);
-        throw new APIError("Bildirim alınırken bir hata oluştu!")
-        
+      console.log(error);
+      throw new APIError("Bildirim alınırken bir hata oluştu!");
     }
   };
 }

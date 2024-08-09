@@ -3,6 +3,8 @@ import { IBaseModel } from "../../@base/baseModel";
 
 export interface INotification extends IBaseModel {
   user: ObjectId;
+  recipients: ObjectId[];
+  subject: string;
   project?: ObjectId;
   task?: ObjectId;
   message: string;
@@ -11,6 +13,8 @@ export interface INotification extends IBaseModel {
 
 const notificationSchemaFields = {
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  recipients: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
+  subject: { type: String, required: true },
   project: { type: Schema.Types.ObjectId, ref: "Project" },
   task: { type: Schema.Types.ObjectId, ref: "Task" },
   message: { type: String, required: true },

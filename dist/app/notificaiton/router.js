@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const controller_1 = require("./controller");
 const router = express_1.default.Router();
 router.post("/notification", controller_1.notificationController.create);
-router.get("/notification/:userId", controller_1.notificationController.getNotificationsForUser);
+router.get("/notification/:id", controller_1.notificationController.getById);
+router.get("/notification/user/:userId", controller_1.notificationController.getNotificationsForUser);
 router.delete("/notification/:id", controller_1.notificationController.delete);
 exports.default = router;

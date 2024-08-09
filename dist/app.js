@@ -14,11 +14,11 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.json({ limit: "50mb" }));
 app.use(express_1.default.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
-app.get("/", (req, res) => {
-    res.json({
-        message: "Hoş geldiniz",
-    });
-});
+// app.get("/", (req: Request, res: Response) => {
+//   res.json({
+//     message: "Hoş geldiniz",
+//   });
+// });
 app.use("/api", routes_1.default);
 app.use(errorHandler_1.default);
 (0, dbConnection_1.default)()

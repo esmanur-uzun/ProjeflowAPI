@@ -23,8 +23,10 @@ class NotificationController extends baseController_1.default {
         this.getNotificationsForUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { userId } = req.params;
-                yield model_1.Notification.find({ user: userId }).sort({ createdAt: -1, });
-                new response_1.default("Bildirimler başarıyla alındı!").success(res);
+                const notifications = yield model_1.Notification.find({ $or: [{ user: userId }, { recipients: userId }] }).sort({
+                    createdAt: -1,
+                }).select("-recipients");
+                new response_1.default(notifications, "Bildirimler başarıyla alındı!").success(res);
             }
             catch (error) {
                 console.log(error);

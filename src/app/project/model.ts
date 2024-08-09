@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { IBaseModel } from "../../@base/baseModel";
 import { ITask } from "../tasks/model"; // Bu import satırı aslında kullanılmıyor
+import { IUser } from "../users/model";
 
 export interface IProject extends IBaseModel {
   title: string;
@@ -10,7 +11,7 @@ export interface IProject extends IBaseModel {
   terminDate: Date;
   status: "planned" | "in progress" | "completed";
   owner: string;
-  teamMembers: string[];
+  teamMembers: IUser[];
   tasks: ITask[]; 
   updateDate: Date;
 }

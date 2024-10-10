@@ -1,4 +1,4 @@
-import express, {Request, Response} from "express";
+import express from "express";
 import  { userController } from "./controller";
 const router = express.Router()
 import JWt from "../../middlewares/auth";

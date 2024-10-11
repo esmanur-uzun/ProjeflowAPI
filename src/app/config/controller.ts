@@ -22,21 +22,18 @@ class ConfigController extends BaseController<IConfig>{
                 new ResponseMessage ("Geçersiz icon formatı! Sadece SVG, PNG, JPG ve JPEG formatına izin verilir. ").error400(res)
                 return 
             }
-            const configs = await Config.findOne({});
-            if (!configs) {
-                const newConfig = new Config({
-                    menu: [{ title, icon}],
+            let config = await Config.findOne({});
+            if (!config) {
+                config = new Config({
+                    menu: []
                 });
-                await newConfig.save();
-                // configs.menu.push({ title, icon });
-                // await configs.save(); 
-                // new ResponseMessage("Menü listesine eklendi").success(res)
-            }else{
-                configs.menu.push({ title, icon });
-
-                await configs.save();
             }
-       
+            config.menu.push({ title, icon });
+
+            await config.save();
+
+            new ResponseMessage("Menü başarıyla eklendi.").success(res);
+
 
         } catch (error) {
             console.log(error);

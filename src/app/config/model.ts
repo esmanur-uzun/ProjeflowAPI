@@ -18,6 +18,7 @@ const configSchemaFields = {
 };
 
 const configSchema = new Schema<IConfig>(configSchemaFields, {
+  
   timestamps: true,
   collection: "configs",
 });

@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IBaseModel extends Document {
-  _id?: string;
+  _id: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
         fs.mkdirSync(uploadPath,{recursive:true})
         callback(null,uploadPath)
     },
-    filename: function(req:Request,file:Express.Multer.File,callback:(error: Error | null, destination: string) => void){
+    filename: function(req:Request,file:Express.Multer.File,callback:(error: Error | null, filename: string) => void){
         const extension = file.mimetype.split("/")[1]
 
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random()  * 1E9)
@@ -29,3 +29,6 @@ const storage = multer.diskStorage({
         callback(null,url)
     } 
 })
+
+const upload = multer({storage,fileFilter}).single('file')
+export default upload

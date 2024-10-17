@@ -4,6 +4,7 @@ import { config } from "./@utils/config";
 import dbConnection from "./db/dbConnection";
 import router from "./routes"
 import errorHandlerMiddleware from "./middlewares/errorHandler";
+import path from "path"
 
 const app = express();
 
@@ -12,11 +13,8 @@ app.use(express.json())
 app.use(express.json({limit:"50mb"}))
 app.use(express.urlencoded({limit:"50mb",extended:true,parameterLimit:50000}))
 
-// app.get("/", (req: Request, res: Response) => {
-//   res.json({
-//     message: "Hoş geldiniz",
-//   });
-// });
+app.use(express.static(path.join(__dirname,"public")))
+app.use("/uploads",express.static(__dirname))
 
 app.use("/api",router)
 app.use(errorHandlerMiddleware)

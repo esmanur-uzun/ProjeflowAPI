@@ -4,6 +4,8 @@ import { Config, IConfig } from "./model";
 import ResponseMessage from "../../@utils/response";
 import APIError from "../../@utils/errors";
 import upload from "../../middlewares/lib/upload";
+import sharp from "sharp";
+import path from "path";
 
 class ConfigController extends BaseController<IConfig> {
   constructor() {
@@ -22,7 +24,20 @@ class ConfigController extends BaseController<IConfig> {
         }
 
         const { title } = req.body;
-        const icon = req.file ? `/uploads/config/${req.file.filename}` : "";
+        let icon = req.file ? `/uploads/config/${req.file.filename}` : "";
+
+        if(icon.endsWith('.svg')){
+          const pngFileName = `${path.basename(icon, '.svg')}.png`;
+          const pngFilePath = path.join(path.dirname(icon), pngFileName);
+
+          await sharp(icon).png().toFile(pngFilePath).then(()=>{
+            console.log(`dönüştürülen dosya: ${pngFilePath}`);
+            
+          }).catch((error)=>{
+            throw new APIError("SVG dönüştürme hatası !" + error)
+          })
+          icon = pngFilePath; 
+        }
 
         let config = await Config.findOne({});
 

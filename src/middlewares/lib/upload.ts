@@ -15,7 +15,7 @@ const fileFilter = (req:Request,file: Express.Multer.File,cb:FileFilterCallback)
 const storage = multer.diskStorage({
     destination: function(req:Request,file:Express.Multer.File,callback:(error: Error | null, destination: string) => void){
         const rootDir = path.dirname(require.main?.filename || "")
-        const uploadPath = path.join(rootDir, "public/uploads/config");
+        const uploadPath = path.join(rootDir, "public/uploads");
         fs.mkdirSync(uploadPath,{recursive:true})
         callback(null,uploadPath)
     },

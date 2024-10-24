@@ -26,7 +26,7 @@ class BaseController <T extends Document>{
     // get all data
     public getAll = async (req:Request,res:Response) : Promise<void> =>{
         try {
-            const documents = await this.model.find()
+            const documents = await this.model.findOne()
             new ResponseMessage(documents,"Veriler başarıyla alındı").success(res)
         } catch (error) {
             console.log(error);

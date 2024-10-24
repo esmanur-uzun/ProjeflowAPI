@@ -18,7 +18,6 @@ class ConfigController extends BaseController<IConfig> {
       upload(req, res, async function (err) {
         if (err) {
           throw new APIError("Dosya yükleme hatası!");
-          return;
         }
 
         const { title } = req.body;
@@ -43,6 +42,8 @@ class ConfigController extends BaseController<IConfig> {
       throw new APIError("Menü listesine ekleme işelminde bir hata oluştu!");
     }
   };
+
+ 
 }
 
 const configController = new ConfigController();
